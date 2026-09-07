@@ -1,0 +1,5 @@
+ALTER TABLE urls
+    ADD created_at TIMESTAMP(6) WITHOUT TIME ZONE;
+
+ALTER TABLE urls
+    ALTER COLUMN created_at SET NOT NULL;
