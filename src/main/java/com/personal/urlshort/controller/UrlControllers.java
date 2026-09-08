@@ -5,6 +5,7 @@ import com.personal.urlshort.dto.UrlResponseDto;
 import com.personal.urlshort.service.UrlService;
 import com.personal.urlshort.service.impl.UrlServiceImpl;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class UrlControllers {
     }
 
     @GetMapping("/{code}")
-    public ResponseEntity<UrlResponseDto> getShortUrl(@PathVariable @Valid String code) {
+    public ResponseEntity<UrlResponseDto> getShortUrl(@PathVariable @Pattern(regexp = "^[a-zA-Z0-9]{1,7}$") String code) {
 
         UrlResponseDto longUrl = urlService.getLongUrl(code);
 
@@ -41,7 +42,7 @@ public class UrlControllers {
     }
 
     @DeleteMapping("/{code}")
-    public ResponseEntity<Void> deactivateUrl(@PathVariable @Valid String code) {
+    public ResponseEntity<Void> deactivateUrl(@PathVariable @Pattern(regexp = "^[a-zA-Z0-9]{1,7}$") String code) {
         urlService.decativateUrl(code);
         return ResponseEntity.noContent().build();
     }
