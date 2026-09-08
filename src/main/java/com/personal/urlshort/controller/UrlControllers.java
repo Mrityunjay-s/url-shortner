@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@RestController("/v1")
+@RestController()
 public class UrlControllers {
 
     private static final Logger log = LoggerFactory.getLogger(UrlControllers.class);
@@ -38,5 +38,11 @@ public class UrlControllers {
         return ResponseEntity.status(HttpStatus.FOUND)
                 .location(URI.create(longUrl.getUrl()))
                 .build();
+    }
+
+    @DeleteMapping("/{code}")
+    public ResponseEntity<Void> deactivateUrl(@PathVariable @Valid String code) {
+        urlService.decativateUrl(code);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -82,6 +82,29 @@ public class UrlServiceImpl implements UrlService {
         return new UrlResponseDto(url.getLongUrl());
     }
 
+    @Override
+    @Transactional
+    public void decativateUrl(String code) {
+
+        String key = RedisConstants.URL_PREFIX + code;
+
+        // Remove from Redis
+        Boolean deleted = stringRedisTemplate.delete(key);
+
+        if (Boolean.TRUE.equals(deleted)) {
+            log.info("Short URL removed from Redis: {}", code);
+        } else {
+            log.info("Short URL not found in Redis: {}", code);
+        }
+
+        int deletedRows = urlRepository.deleteByShortCode(code);
+
+        if (deletedRows == 0) {
+            throw new UrlNotFound("Short URL not found: " + code);
+        }
+        log.info("Short URL deactivated: {}", code);
+    }
+
     private Long getCounter() {
         return stringRedisTemplate.opsForValue().increment(RedisConstants.URL_COUNTER);
     }
