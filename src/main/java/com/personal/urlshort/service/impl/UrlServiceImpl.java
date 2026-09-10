@@ -62,7 +62,6 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public UrlResponseDto getLongUrl(String code) {
         String longUrl = stringRedisTemplate.opsForValue().get(RedisConstants.URL_PREFIX + code);
-
         // Cache hit
         if (longUrl != null) {
             log.info("Short URL found in Redis: {}", code);
